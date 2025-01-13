@@ -1,4 +1,5 @@
 import { resolve } from 'path'
+import { fileURLToPath } from 'url'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -10,10 +11,16 @@ export default defineConfig({
     vue(),
     dts({ tsconfigPath: './tsconfig.app.json' })
   ],
+  resolve: {
+    alias: {
+      vue: fileURLToPath(new URL("./node_modules/vue/dist/vue.esm-bundler.js", import.meta.url))
+    }
+  },
   build: {
     lib: {
       entry: {
-        'admin-layout': resolve(__dirname, 'src/admin-layout/index.ts')
+        'admin-layout': resolve(__dirname, 'src/admin-layout/index.ts'),
+        'primitive': resolve(__dirname, 'src/primitive/index.ts')
       },
       name: 'vue-materials',
       formats: ['es', 'cjs'],
@@ -21,6 +28,14 @@ export default defineConfig({
         if (format === 'cjs') return `${name}.cjs`
         if (format === 'es') return `${name}.mjs`
         return `${name}.${format}.js`
+      }
+    },
+    rollupOptions: {
+      external: ['vue', 'fsevents'],
+      output: {
+        globals: {
+          'vue': 'Vue'
+        }
       }
     }
   },
