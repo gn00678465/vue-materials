@@ -20,7 +20,8 @@ export default defineConfig({
     lib: {
       entry: {
         'admin-layout': resolve(__dirname, 'src/admin-layout/index.ts'),
-        'primitive': resolve(__dirname, 'src/primitive/index.ts')
+        'primitive': resolve(__dirname, 'src/primitive/index.ts'),
+        'utils': resolve(__dirname, 'src/utils/index.ts')
       },
       name: 'vue-materials',
       formats: ['es', 'cjs'],

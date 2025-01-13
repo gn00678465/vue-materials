@@ -14,12 +14,18 @@
       "import": "./dist/primitive.mjs",
       "require": "./dist/primitive.cjs"
     },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "import": "./dist/utils.mjs",
+      "require": "./dist/utils.cjs"
+    },
     "./*": "./*"
   },
   "typesVersions": {
     "*": {
       "admin-layout": ["./dist/admin-layout/index.d.ts"],
-      "primitive": ["./dist/primitive/index.d.ts"]
+      "primitive": ["./dist/primitive/index.d.ts"],
+      "utils": ["./dist/utils/index.d.ts"]
     }
   },
   "scripts": {
