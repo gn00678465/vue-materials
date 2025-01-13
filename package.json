@@ -9,11 +9,17 @@
       "import": "./dist/admin-layout.mjs",
       "require": "./dist/admin-layout.cjs"
     },
+    "./primitive": {
+      "types": "./dist/primitive/index.d.ts",
+      "import": "./dist/primitive.mjs",
+      "require": "./dist/primitive.cjs"
+    },
     "./*": "./*"
   },
   "typesVersions": {
     "*": {
-      "admin-layout": ["./dist/admin-layout/index.d.ts"]
+      "admin-layout": ["./dist/admin-layout/index.d.ts"],
+      "primitive": ["./dist/primitive/index.d.ts"]
     }
   },
   "scripts": {
@@ -45,10 +51,10 @@
     "npm-run-all2": "^7.0.2",
     "typed-css-modules": "^0.9.1",
     "typescript": "~5.6.3",
-    "vite": "^6.0.5",
+    "vite": "^6.0.7",
     "vite-plugin-dts": "^4.4.0",
     "vitest": "^2.1.8",
-    "vue-tsc": "^2.1.10"
+    "vue-tsc": "^2.2.0"
   },
   "peerDependencies": {
     "vue": "latest"
