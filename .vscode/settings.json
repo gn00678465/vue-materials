@@ -9,5 +9,6 @@
     "source.fixAll": "explicit"
   },
   "typescript.tsdk": "node_modules\\typescript\\lib",
-  "vitest.rootConfig": "./vitest.config.ts"
+  "vitest.rootConfig": "./vitest.config.ts",
+  "vitest.disableWorkspaceWarning": true
 }

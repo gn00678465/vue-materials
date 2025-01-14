@@ -10,7 +10,8 @@ export type SpacingType = 'padding' | 'margin';
 export function parseSpacingToCSSVar(
   value: string,
   prefix: string = '',
-  type: SpacingType = 'padding'
+  type: SpacingType = 'padding',
+  size: string = ''
 ): Record<string, string> {
   // 處理 calc 表達式和其他複雜值
   const splitComplexValue = (str: string): string[] => {
@@ -43,8 +44,24 @@ export function parseSpacingToCSSVar(
 
     return values;
   };
+
+  // 生成變數名稱
+  const getVariableName = (side: string): string => {
+    const parts: string[] = [type];
+    if (size) {
+      parts.push(size);
+    }
+    parts.push(side);
+    return `--${prefix}${parts.filter(Boolean).join('-')}`;
+  };
+
   // 移除多餘空格並分割值
   const values = splitComplexValue(value.trim())
+
+  if (values.length === 0 || values.length > 4) {
+    throw new Error('Invalid spacing value format');
+  }
+
   const result: Record<string, string> = {};
 
   // 根據傳入值的數量處理不同情況
@@ -52,38 +69,35 @@ export function parseSpacingToCSSVar(
     case 1:
       // 所有方向使用相同值
       ['top', 'right', 'bottom', 'left'].forEach(side => {
-        result[`--${prefix}${type}-${side}`] = values[0];
+        result[getVariableName(side)] = values[0];
       });
       break;
 
     case 2:
       // 垂直和水平方向使用不同值
       ['top', 'bottom'].forEach(side => {
-        result[`--${prefix}${type}-${side}`] = values[0];
+        result[getVariableName(side)] = values[0];
       });
       ['right', 'left'].forEach(side => {
-        result[`--${prefix}${type}-${side}`] = values[1];
+        result[getVariableName(side)] = values[1];
       });
       break;
 
     case 3:
       // 上、水平、下方向使用不同值
-      result[`--${prefix}${type}-top`] = values[0];
+      result[getVariableName('top')] = values[0];
       ['right', 'left'].forEach(side => {
-        result[`--${prefix}${type}-${side}`] = values[1];
+        result[getVariableName(side)] = values[1];
       });
-      result[`--${prefix}${type}-bottom`] = values[2];
+      result[getVariableName('bottom')] = values[2];
       break;
 
     case 4:
       // 所有方向使用不同值
       ['top', 'right', 'bottom', 'left'].forEach((side, index) => {
-        result[`--${prefix}${type}-${side}`] = values[index];
+        result[getVariableName(side)] = values[index];
       });
       break;
-
-    default:
-      throw new Error('Invalid spacing value format');
   }
 
   return result;

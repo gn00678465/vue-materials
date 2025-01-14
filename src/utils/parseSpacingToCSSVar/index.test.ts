@@ -119,4 +119,48 @@ describe('parseSpacingToCSSVar', () => {
       });
     });
   });
+
+  describe('Size Parameter', () => {
+    it('should handle custom size', () => {
+      const result = parseSpacingToCSSVar('10px', 'theme-', 'padding', 'sm');
+      expect(result).toEqual({
+        '--theme-padding-sm-top': '10px',
+        '--theme-padding-sm-right': '10px',
+        '--theme-padding-sm-bottom': '10px',
+        '--theme-padding-sm-left': '10px',
+      });
+    });
+
+    it('should handle different size with multiple values', () => {
+      const result = parseSpacingToCSSVar('10px 20px 30px', 'theme-', 'margin', 'lg');
+      expect(result).toEqual({
+        '--theme-margin-lg-top': '10px',
+        '--theme-margin-lg-right': '20px',
+        '--theme-margin-lg-left': '20px',
+        '--theme-margin-lg-bottom': '30px',
+      });
+    });
+  });
+
+  describe('Complex Values with Size', () => {
+    it('should handle calc expressions with size', () => {
+      const result = parseSpacingToCSSVar('calc(100% - 20px)', 'theme-', 'padding', 'lg');
+      expect(result).toEqual({
+        '--theme-padding-lg-top': 'calc(100% - 20px)',
+        '--theme-padding-lg-right': 'calc(100% - 20px)',
+        '--theme-padding-lg-bottom': 'calc(100% - 20px)',
+        '--theme-padding-lg-left': 'calc(100% - 20px)',
+      });
+    });
+
+    it('should handle mixed values with size', () => {
+      const result = parseSpacingToCSSVar('10px calc(50% - 10px) 20px', 'theme-', 'margin', 'sm');
+      expect(result).toEqual({
+        '--theme-margin-sm-top': '10px',
+        '--theme-margin-sm-right': 'calc(50% - 10px)',
+        '--theme-margin-sm-left': 'calc(50% - 10px)',
+        '--theme-margin-sm-bottom': '20px',
+      });
+    });
+  });
 })
