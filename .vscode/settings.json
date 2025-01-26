@@ -10,5 +10,8 @@
   },
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "vitest.rootConfig": "./vitest.config.ts",
-  "vitest.disableWorkspaceWarning": true
+  "vitest.disableWorkspaceWarning": true,
+  "cSpell.words": [
+    "vnode"
+  ]
 }

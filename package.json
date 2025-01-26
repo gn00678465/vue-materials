@@ -1,6 +1,6 @@
 {
   "name": "vue-materials",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
   "exports": {
@@ -15,9 +15,9 @@
       "require": "./dist/primitive.cjs"
     },
     "./utils": {
-      "types": "./dist/utils/index.d.ts",
-      "import": "./dist/utils.mjs",
-      "require": "./dist/utils.cjs"
+      "types": "./dist/shared/index.d.ts",
+      "import": "./dist/shared.mjs",
+      "require": "./dist/shared.cjs"
     },
     "./*": "./*"
   },
@@ -25,7 +25,7 @@
     "*": {
       "admin-layout": ["./dist/admin-layout/index.d.ts"],
       "primitive": ["./dist/primitive/index.d.ts"],
-      "utils": ["./dist/utils/index.d.ts"]
+      "shared": ["./dist/shared/index.d.ts"]
     }
   },
   "scripts": {
