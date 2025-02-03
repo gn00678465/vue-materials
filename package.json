@@ -23,9 +23,15 @@
   },
   "typesVersions": {
     "*": {
-      "admin-layout": ["./dist/admin-layout/index.d.ts"],
-      "primitive": ["./dist/primitive/index.d.ts"],
-      "shared": ["./dist/shared/index.d.ts"]
+      "admin-layout": [
+        "./dist/admin-layout/index.d.ts"
+      ],
+      "primitive": [
+        "./dist/primitive/index.d.ts"
+      ],
+      "shared": [
+        "./dist/shared/index.d.ts"
+      ]
     }
   },
   "scripts": {
@@ -40,6 +46,8 @@
     "postinstall": "pnpm build"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.0.1",
     "vue": "latest"
   },
   "devDependencies": {
