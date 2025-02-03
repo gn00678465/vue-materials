@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { AdminLayoutProps } from './types'
 import { computed, Fragment, h, toRefs, useAttrs } from 'vue'
-import { bindClass, createLayoutCssVars, LAYOUT_MAX_Z_INDEX, LAYOUT_SCROLL_EL_ID } from './helpers'
-import style from './styles/index.module.css'
+import { createLayoutCssVars, LAYOUT_MAX_Z_INDEX, LAYOUT_SCROLL_EL_ID } from './helpers'
+import { cn } from '../shared/cn'
+import css from './styles/index.module.css'
 
 defineOptions({
   name: 'AdminLayout',
@@ -84,7 +85,7 @@ const fixedHeaderAndTab = computed(() => props.fixedTop || (isHorizontal.value &
 // css
 const leftGapClass = computed(() => {
   if (!props.fullContent && showSidebar.value) {
-    return sidebarCollapse.value ? style['admin-left-gap_collapsed'] : style['admin-left-gap']
+    return sidebarCollapse.value ? css['admin-left-gap_collapsed'] : css['admin-left-gap']
   }
 
   return ''
@@ -108,10 +109,10 @@ const sidebarPaddingClass = computed(() => {
   let cls = ''
 
   if (showHeader.value && !headerLeftGapClass.value) {
-    cls += style['admin-sidebar-padding-top']
+    cls += css['admin-sidebar-padding-top']
   }
   if (showFooter.value && !footerLeftGapClass.value) {
-    cls += ` ${style['admin-sidebar-padding-bottom']}`
+    cls += ` ${css['admin-sidebar-padding-bottom']}`
   }
 
   return cls
@@ -121,20 +122,20 @@ const sidebarPaddingClass = computed(() => {
 function layoutHeader() {
   return h(Fragment, [
     h('header', {
-      class: bindClass([
+      class: cn(
         'flex-shrink-0',
-        style['admin-layout-header'],
+        css['admin-layout-header'],
         commonClass.value,
         headerClass.value,
         headerLeftGapClass.value,
-        (fixedHeaderAndTab.value && 'absolute top-0 left-0 w-full') || undefined,
-      ]),
+        fixedHeaderAndTab.value && 'absolute top-0 left-0 w-full'
+      ),
       Style: {
         display: !fullContent.value ? 'initial' : 'none',
       },
     }, slots.header?.()),
     h('div', {
-      class: bindClass(['flex-shrink-0 overflow-hidden', style['admin-layout-header-placement']]),
+      class: cn('flex-shrink-0 overflow-hidden', css['admin-layout-header-placement']),
       style: { display: !fullContent.value && fixedHeaderAndTab.value ? 'initial' : 'none' },
     }),
   ])
@@ -144,18 +145,18 @@ function layoutHeader() {
 function layoutTab() {
   return h(Fragment, [
     h('div', {
-      class: bindClass([
+      class: cn(
         'flex-shrink-0',
-        style['admin-layout-tab'],
+        css['admin-layout-tab'],
         commonClass.value,
         tabClass.value,
-        ((fullContent.value || !showHeader.value) && 'top-0!') || undefined,
+        (fullContent.value || !showHeader.value) && 'top-0!',
         leftGapClass.value,
-        (fixedHeaderAndTab.value && 'absolute left-0 w-full') || undefined,
-      ]),
+        fixedHeaderAndTab.value && 'absolute left-0 w-full'
+      ),
     }, slots.tab?.()),
     h('div', {
-      class: bindClass(['flex-shrink-0', 'overflow-hidden', style['admin-layout-tab-placement']]),
+      class: cn('flex-shrink-0', 'overflow-hidden', css['admin-layout-tab-placement']),
       style: { display: (fullContent.value || fixedHeaderAndTab.value) ? 'initial' : 'none' },
     }),
   ])
@@ -165,30 +166,30 @@ function layoutTab() {
 function layoutSidebar() {
   return h('aside', {
     style: !fullContent.value ? 'initial' : 'none',
-    class: bindClass([
+    class: cn(
       'absolute left-0 top-0 h-full',
       commonClass.value,
       sidebarClass.value,
       sidebarPaddingClass.value,
-      sidebarCollapse.value ? style['admin-layout-sidebar_collapsed'] : style['admin-layout-sidebar'],
-    ]),
+      sidebarCollapse.value ? css['admin-layout-sidebar_collapsed'] : css['admin-layout-sidebar']
+    ),
   }, slots.sidebar?.())
 }
 
 function layoutMobileSidebar() {
   return h(Fragment, [
     h('aside', {
-      class: bindClass([
+      class: cn(
         'absolute left-0 top-0 h-full w-0 bg-white',
         commonClass.value,
         mobileSidebarClass.value,
-        style['admin-layout-mobile-sidebar'],
-        sidebarCollapse.value ? 'overflow-hidden' : style['admin-layout-sidebar'],
-      ]),
+        css['admin-layout-mobile-sidebar'],
+        sidebarCollapse.value ? 'overflow-hidden' : css['admin-layout-sidebar']
+      ),
     }, slots.sidebar?.()),
     h('div', {
       style: { display: !sidebarCollapse.value ? 'initial' : 'none' },
-      class: bindClass(['absolute left-0 top-0 h-full w-full bg-[rgba(0,0,0,0.2)]', style['admin-layout-mobile-sidebar-mask']]),
+      class: cn('absolute left-0 top-0 h-full w-full bg-[rgba(0,0,0,0.2)]', css['admin-layout-mobile-sidebar-mask']),
     }),
   ])
 }
@@ -196,13 +197,13 @@ function layoutMobileSidebar() {
 // layout content
 function layoutContent() {
   return h('main', {
-    class: bindClass([
+    class: cn(
       'flex flex-col flex-grow',
       commonClass.value,
       contentClass.value,
       leftGapClass.value,
-      isContentScroll.value ? 'overflow-y-auto' : undefined,
-    ]),
+      isContentScroll.value && 'overflow-y-auto'
+    ),
     id: isContentScroll.value ? scrollElId.value : undefined,
   }, slots.default?.())
 }
@@ -211,20 +212,20 @@ function layoutContent() {
 function layoutFooter() {
   return h(Fragment, [
     h('footer', {
-      class: bindClass([
+      class: cn(
         'flex-shrink-0',
-        style['admin-layout-footer'],
+        css['admin-layout-footer'],
         commonClass.value,
         footerClass.value,
         footerLeftGapClass.value,
-        (fixedFooter.value && 'absolute left-0 bottom-0 w-full') || undefined,
-      ]),
+        fixedFooter.value && 'absolute left-0 bottom-0 w-full'
+      ),
       style: {
         display: !fullContent.value ? 'initial' : 'none',
       },
     }, slots.footer?.()),
     h('div', {
-      class: bindClass(['flex-shrink-0 overflow-hidden', style['admin-layout-footer-placement']]),
+      class: cn('flex-shrink-0 overflow-hidden', css['admin-layout-footer-placement']),
       style: { display: !fullContent.value && fixedFooter.value ? 'initial' : 'none' },
       onClick: handleClickMask,
     }),

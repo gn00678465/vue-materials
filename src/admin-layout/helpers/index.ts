@@ -66,7 +66,3 @@ export function createLayoutCssVars(props: AdminLayoutProps) {
 
   return createLayoutCssVarsByCssVarsProps(cssProps)
 }
-
-export function bindClass(arr: (string | boolean | undefined)[]): string {
-  return arr.filter(Boolean).join(' ')
-}
