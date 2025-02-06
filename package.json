@@ -48,7 +48,8 @@
   "dependencies": {
     "clsx": "^2.1.1",
     "tailwind-merge": "^3.0.1",
-    "vue": "latest"
+    "vue": "latest",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.0",
