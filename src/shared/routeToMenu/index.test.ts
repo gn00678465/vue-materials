@@ -200,11 +200,8 @@ describe('convertRoutesToMenu', () => {
     ]
 
     const result = convertRoutesToMenu(routes, {
-      sort: (a: BaseMenuItem, b: BaseMenuItem) => {
-        const orderA = (a.meta?.order as number) ?? 0
-        const orderB = (b.meta?.order as number) ?? 0
-        return orderA - orderB
-      }
+      sort: (a: RouteRecordRaw, b: RouteRecordRaw) =>
+        ((a.meta?.order as number) || 0) - ((b.meta?.order as number) || 0)
     })
 
     expect(result).toEqual([
@@ -219,6 +216,48 @@ describe('convertRoutesToMenu', () => {
         name: 'B',
         title: 'B',
         meta: { title: 'B', order: 2 }
+      }
+    ])
+  })
+
+  it('should maintain sort order after transformation', () => {
+    const routes: RouteRecordRaw[] = [
+      {
+        path: '/b',
+        name: 'B',
+        component: DummyComponent,
+        meta: { title: 'B', order: 2 }
+      },
+      {
+        path: '/a',
+        name: 'A',
+        component: DummyComponent,
+        meta: { title: 'A', order: 1 }
+      }
+    ]
+
+    interface CustomMenu {
+      key: string
+      label: string
+    }
+
+    const result = convertRoutesToMenu<CustomMenu>(routes, {
+      sort: (a: RouteRecordRaw, b: RouteRecordRaw) =>
+        ((a.meta?.order as number) || 0) - ((b.meta?.order as number) || 0),
+      transform: (route: RouteRecordRaw): CustomMenu => ({
+        key: route.path,
+        label: route.meta?.title as string
+      })
+    })
+
+    expect(result).toEqual([
+      {
+        key: '/a',
+        label: 'A'
+      },
+      {
+        key: '/b',
+        label: 'B'
       }
     ])
   })

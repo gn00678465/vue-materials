@@ -22,14 +22,17 @@ function processRoutes<T = BaseMenuItem>(
   options: MenuConversionOptions<T> = {},
   parentPath = ''
 ): T[] {
+  // First, filter routes if needed
+  let processedRoutes = routes.filter(route => !options.filter || options.filter(route))
+
+  // Apply sorting before any transformation
+  if (options.sort) {
+    processedRoutes.sort(options.sort)
+  }
+
   const result: T[] = []
 
-  for (const route of routes) {
-    // Apply filter if provided
-    if (options.filter && !options.filter(route)) {
-      continue
-    }
-
+  for (const route of processedRoutes) {
     // Handle flattening
     if (options.shouldFlatten?.(route) && route.children?.length) {
       const flattenedChildren = processRoutes(
@@ -41,15 +44,21 @@ function processRoutes<T = BaseMenuItem>(
       continue
     }
 
-    // Create menu item
+    // Create menu item (transform after sorting)
     const menuItem = options.transform
       ? options.transform(route)
       : createDefaultMenuItem(route, parentPath) as unknown as T
 
     // Process children if they exist
     if (route.children?.length) {
+      // Sort children before transformation
+      const sortedChildren = [...route.children]
+      if (options.sort) {
+        sortedChildren.sort(options.sort)
+      }
+
       const children = processRoutes(
-        route.children,
+        sortedChildren,
         options,
         route.path
       )
@@ -59,11 +68,6 @@ function processRoutes<T = BaseMenuItem>(
     }
 
     result.push(menuItem)
-  }
-
-  // Apply sorting if provided
-  if (options.sort) {
-    result.sort(options.sort)
   }
 
   return result

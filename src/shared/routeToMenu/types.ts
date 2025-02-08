@@ -23,14 +23,16 @@ export interface MenuConversionOptions<T = BaseMenuItem> {
   shouldFlatten?: (route: RouteRecordRaw) => boolean
 
   /**
-   * Transform function to convert route to custom menu item type
+   * Sort function for routes before transformation
+   * This runs before transform to ensure sorting is based on original route data
    */
-  transform?: (route: RouteRecordRaw) => T
+  sort?: (a: RouteRecordRaw, b: RouteRecordRaw) => number
 
   /**
-   * Sort function for menu items
+   * Transform function to convert route to custom menu item type
+   * This runs after sorting to ensure proper order is maintained
    */
-  sort?: (a: T, b: T) => number
+  transform?: (route: RouteRecordRaw) => T
 }
 
 export type ConvertRoutesToMenu = <T = BaseMenuItem>(
