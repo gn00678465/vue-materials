@@ -270,4 +270,4 @@ function handleClickMask() {
   </div>
 </template>
 
-<style scoped></style>
+<style src="./styles/utility.css"></style>
